@@ -25,53 +25,74 @@ export function sortStudents(students: Student[], sortBy: SortType, order: SortO
   // write your function
   let sortedStudents = [...students];
 
-  switch (order) {
-    case 'asc':
-      switch (sortBy) {
-        case SortType.Name:
+  const getAverageGrade = (grades: number[]):number => {
+    return grades.reduce((x, y) => x + y) / grades.length;
+  };
+
+  switch (sortBy) {
+    case SortType.Name:
+      switch (order) {
+        case 'asc':
           sortedStudents = sortedStudents.sort((a, b) => a.name.localeCompare(b.name));
           break;
+        case 'desc':
+          sortedStudents = sortedStudents.sort((a, b) => b.name.localeCompare(a.name));
+          break;
 
-        case SortType.Surname:
+        default:
+          break;
+      }
+      break;
+
+    case SortType.Surname:
+
+      switch (order) {
+        case 'asc':
           sortedStudents = sortedStudents.sort((a, b) => a.surname.localeCompare(b.surname));
           break;
-
-        case SortType.Age:
-          sortedStudents = sortedStudents.sort((a, b) => a.age - b.age);
-          break;
-
-        case SortType.Married:
-          sortedStudents = sortedStudents.sort((a, b) => +a.married - +b.married);
-          break;
-
-        case SortType.AverageGrade:
-          sortedStudents = sortedStudents.sort((a, b) => (a.grades.reduce((x, y) => x + y) / a.grades.length) - (b.grades.reduce((x, y) => x + y) / b.grades.length));
+        case 'desc':
+          sortedStudents = sortedStudents.sort((a, b) => b.surname.localeCompare(a.surname));
           break;
         default:
           break;
       }
       break;
 
-    case 'desc':
-      switch (sortBy) {
-        case SortType.Name:
-          sortedStudents = sortedStudents.sort((a, b) => a.name.localeCompare(b.name));
+    case SortType.Age:
+      switch (order) {
+        case 'asc':
+          sortedStudents = sortedStudents.sort((a, b) => a.age - b.age);
           break;
-
-        case SortType.Surname:
-          sortedStudents = sortedStudents.sort((a, b) => a.surname.localeCompare(b.surname));
-          break;
-
-        case SortType.Age:
+        case 'desc':
           sortedStudents = sortedStudents.sort((a, b) => b.age - a.age);
           break;
-
-        case SortType.Married:
-          sortedStudents = sortedStudents.sort((a, b) => +b.married - +a.married);
+        default:
           break;
+      }
 
-        case SortType.AverageGrade:
-          sortedStudents = sortedStudents.sort((a, b) => (b.grades.reduce((x, y) => x + y) / b.grades.length) - (a.grades.reduce((x, y) => x + y) / a.grades.length));
+      break;
+
+    case SortType.Married:
+      switch (order) {
+        case 'asc':
+          sortedStudents = sortedStudents.sort((a, b) => Number(a.married) - Number(b.married));
+          break;
+        case 'desc':
+          sortedStudents = sortedStudents.sort((a, b) => Number(b.married) - Number(a.married));
+          break;
+        default:
+          break;
+      }
+      break;
+
+    case SortType.AverageGrade:
+      switch (order) {
+        case 'asc':
+          sortedStudents = sortedStudents.sort((a, b) => getAverageGrade(a.grades) - getAverageGrade(b.grades));
+          break;
+        case 'desc':
+          sortedStudents = sortedStudents.sort((a, b) => getAverageGrade(b.grades) - getAverageGrade(a.grades));
+
           break;
         default:
           break;
